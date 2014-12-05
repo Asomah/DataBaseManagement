@@ -1,7 +1,9 @@
 ﻿DROP TABLE IF EXISTS People;
+DROP TABLE IF EXISTS DayAndTime;
 DROP TABLE IF EXISTS MenAthletes;
 DROP TABLE IF EXISTS WomenAthletes;
-DROP TABLE IF EXISTS DayAndTime;
+DROP TABLE IF EXISTS MenSchedule;
+DROP TABLE IF EXISTS WomenSchedule;
 DROP TABLE IF EXISTS Sports;
 DROP TABLE IF EXISTS MenAthleteSports;
 DROP TABLE IF EXISTS WomenAthleteSports;
@@ -30,22 +32,34 @@ CREATE TABLE DayAndTime (
 -- MenAthletes --
 CREATE TABLE MenAthletes (
   maid char(4) references People(pid),
-  did     char(4) not null references DayAndTime(did),
   weightPounds int,
   heightInches int,
   primary key(maid),
   unique (maid)
 );     
-   
+
 -- WomenAthletes --
 CREATE TABLE WomenAthletes (
   waid    char(4) references People(pid),
-  did     char(4) not null references DayAndTime(did),
   weightPounds   int,
   heightInches   int,
   primary key(waid),
   unique (waid)
 );    
+
+-- MenSchedule --
+CREATE TABLE MenSchedule (
+  maid char(4) references MenAthletes(maid),
+  did char(4) references DayAndTime(did),
+  primary key (maid, did) 
+);
+
+-- WomenSchedule --
+CREATE TABLE WomenSchedule (
+  waid char(4) references WomenAthletes(waid),
+  did char(4) references DayAndTime(did),
+  primary key (waid, did) 
+);
 
 -- Sports -- 
 CREATE TABLE Sports (
@@ -130,19 +144,19 @@ INSERT INTO People( pid, firstName ,lastName, country)
 
 -- DayAndTIme --
 INSERT INTO DayAndTime( did, DateOfEvent, TimeOfEventGMT)
-  VALUES('d001', '06/07/2014', '13:05');
+  VALUES('d001', '06/04/2014', '13:05');
 
 INSERT INTO DayAndTime( did, DateOfEvent, TimeOfEventGMT)
-  VALUES('d002', '06/07/2014', '18:05');
+  VALUES('d002', '06/05/2014', '18:05');
   
 INSERT INTO DayAndTime( did, DateOfEvent, TimeOfEventGMT)
-  VALUES('d003', '06/08/2014', '14:05');
+  VALUES('d003', '06/06/2014', '14:05');
   
 INSERT INTO DayAndTime( did, DateOfEvent, TimeOfEventGMT)
-  VALUES('d004', '06/08/2014', '20:45');
+  VALUES('d004', '06/07/2014', '20:45');
 
 INSERT INTO DayAndTime( did, DateOfEvent, TimeOfEventGMT)
-  VALUES('d005', '06/09/2014', '12:30');
+  VALUES('d005', '06/08/2014', '12:30');
 
 INSERT INTO DayAndTime( did, DateOfEvent, TimeOfEventGMT)
   VALUES('d006', '06/09/2014', '19:05');
@@ -151,45 +165,98 @@ INSERT INTO DayAndTime( did, DateOfEvent, TimeOfEventGMT)
   VALUES('d007', '06/10/2014', '20:05');
 
 -- MenAthletes --
-INSERT INTO MenAthletes( maid, did, weightPounds, heightInches)
-  VALUES('p001', 'd001', 75, 185);
+INSERT INTO MenAthletes( maid, weightPounds, heightInches)
+  VALUES('p001', 75, 185);
 
-INSERT INTO MenAthletes( maid, did, weightPounds, heightInches)
-  VALUES('p002', 'd001', 75, 185);
+INSERT INTO MenAthletes( maid, weightPounds, heightInches)
+  VALUES('p002', 75, 185);
 
-INSERT INTO MenAthletes( maid, did, weightPounds, heightInches)
-  VALUES('p004', 'd002', 72, 191);
+INSERT INTO MenAthletes( maid, weightPounds, heightInches)
+  VALUES('p004', 72, 191);
 
-INSERT INTO MenAthletes( maid, did, weightPounds, heightInches)
-  VALUES('p007', 'd002', 77, 181);
+INSERT INTO MenAthletes( maid, weightPounds, heightInches)
+  VALUES('p007', 77, 181);
 
-INSERT INTO MenAthletes( maid, did, weightPounds, heightInches)
-  VALUES('p008', 'd003', 73, 178);
+INSERT INTO MenAthletes( maid, weightPounds, heightInches)
+  VALUES('p008', 73, 178);
 
-INSERT INTO MenAthletes( maid, did, weightPounds, heightInches)
-  VALUES('p010', 'd004', 69, 175);
+INSERT INTO MenAthletes( maid, weightPounds, heightInches)
+  VALUES('p010',69, 175);
 
-INSERT INTO MenAthletes( maid, did, weightPounds, heightInches)
-  VALUES('p011', 'd005', 75, 189);
+INSERT INTO MenAthletes( maid, weightPounds, heightInches)
+  VALUES('p011', 75, 189);
 
-INSERT INTO MenAthletes( maid, did, weightPounds, heightInches)
-  VALUES('p012', 'd005', 71, 185);
+INSERT INTO MenAthletes( maid, weightPounds, heightInches)
+  VALUES('p012', 71, 185);
 
 -- WomenAthletes --
-INSERT INTO WomenAthletes( waid, did, weightPounds, heightInches)
-  VALUES('p003', 'd001', 69, 169);
+INSERT INTO WomenAthletes( waid, weightPounds, heightInches)
+  VALUES('p003', 69, 169);
 
-INSERT INTO WomenAthletes( waid, did, weightPounds, heightInches)
-  VALUES('p005', 'd002', 70, 171);
+INSERT INTO WomenAthletes( waid, weightPounds, heightInches)
+  VALUES('p005', 70, 171);
 
-INSERT INTO WomenAthletes( waid, did, weightPounds, heightInches)
-  VALUES('p006', 'd006', 67, 169);
+INSERT INTO WomenAthletes( waid, weightPounds, heightInches)
+  VALUES('p006', 67, 169);
 
-INSERT INTO WomenAthletes( waid, did, weightPounds, heightInches)
-  VALUES('p009', 'd006', 70, 177);
+INSERT INTO WomenAthletes( waid, weightPounds, heightInches)
+  VALUES('p009', 70, 177);
 
-INSERT INTO WomenAthletes( waid, did, weightPounds, heightInches)
-  VALUES('p013', 'd007', 73, 173);
+INSERT INTO WomenAthletes( waid, weightPounds, heightInches)
+  VALUES('p013', 73, 173);
+
+--MenSchedule--
+INSERT INTO MenSchedule(maid, did) 
+VALUES('p001', 'd001');
+
+INSERT INTO MenSchedule(maid, did) 
+VALUES('p001', 'd006');
+
+INSERT INTO MenSchedule(maid, did) 
+VALUES('p002', 'd001');
+
+INSERT INTO MenSchedule(maid, did) 
+VALUES('p004', 'd002');
+
+INSERT INTO MenSchedule(maid, did) 
+VALUES('p004', 'd006');
+
+INSERT INTO MenSchedule(maid, did) 
+VALUES('p007', 'd002');
+
+INSERT INTO MenSchedule(maid, did) 
+VALUES('p008', 'd003');
+
+INSERT INTO MenSchedule(maid, did) 
+VALUES('p010', 'd004');
+
+INSERT INTO MenSchedule(maid, did) 
+VALUES('p011', 'd007');
+
+INSERT INTO MenSchedule(maid, did) 
+VALUES('p012', 'd007');
+
+--WomenSchedule--
+INSERT INTO WomenSchedule(waid, did) 
+VALUES('p003', 'd001');
+
+INSERT INTO WomenSchedule(waid, did) 
+VALUES('p003', 'd005');
+
+INSERT INTO WomenSchedule(waid, did) 
+VALUES('p005', 'd001');
+
+INSERT INTO WomenSchedule(waid, did) 
+VALUES('p005', 'd006');
+
+INSERT INTO WomenSchedule(waid, did) 
+VALUES('p006', 'd004');
+
+INSERT INTO WomenSchedule(waid, did) 
+VALUES('p009', 'd006');
+
+INSERT INTO WomenSchedule(waid, did) 
+VALUES('p013', 'd005');
 
 
 -- Sports --
@@ -320,8 +387,11 @@ where p.pid = m.maid
 select * 
 from DayAndTime
 
+select *
+from WomenAthletes
+
 select * 
-from MenAthleteSports
+from WomenSchedule
 
 select *
 from WomenAthleteSports
@@ -332,17 +402,32 @@ from SportStadium
 select * 
 from People
 
---Get the first and last name of MenAthletes who have a game on 2014-06-08--
-select p.firstName, p.lastName
+--Get the first and last name of WomenAthletes who have a game on 2014-06-08--
+select p.firstName, p.lastName, p.country
 from People p
-where p.pid in ( select maid
-		 from MenAthletes
-		 where did in ( select did 
-				from DayAndTime
-				where dateOfEvent = '2014-06-08')
-				)
+where p.pid in ( select w.waid
+		 from WomenAthletes w
+		 where w.waid in (select ws.waid
+				 from WomenSchedule ws
+				 where ws.did in (select d.did
+						  from DayAndTime d
+						  where dateOfEvent = '2014-06-04')
+				                  ) 
+				                  )
+order by p.firstName ASC
 
-
+select p.firstName, p.lastName, p.country
+from People p
+where p.pid in (select m.maid
+		from MenAthletes m,
+		     MenSchedule ms,
+		     WomenAthletes w,
+		     WomenSchedule ws
+		where m.maid = ms.maid
+		and w.waid = ws.waid
+		and ms.did = ws.did)
+order by p.firstName ASC
+			     
 --view 1--
 create view athleteName AS
 	select distinct firstName, lastName
@@ -377,7 +462,7 @@ $BODY$
 declare
     account_type varchar;
 begin
-     IF (NEW.DateOfEvent > '2014-06-10') then
+     IF (NEW.DateOfEvent >'2014-06-10' or NEW.DateOfEvent <'2014-06-04' ) then
 	raise NOTICE 'WARNING : There are no events on this day %' , NEW.DateOfEvent;
 	end if;
     return null;
